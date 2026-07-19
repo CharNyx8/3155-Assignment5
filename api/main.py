@@ -98,4 +98,25 @@ def update_resource(resource_id: int, request: schemas.ResourceUpdate, db: Sessi
 def delete_resource(resource_id: int, db: Session = Depends(get_db)):
     resources.delete(db, resource_id)
 
+#Recipes
+@app.post("/recipes", tags=["Recipes"])
+def create_recipe(request: schemas.RecipeCreate, db: Session = Depends(get_db)):
+    return recipes.create(db, request)
+
+@app.get("/recipes", tags=["Recipes"])
+def read_recipes(db: Session = Depends(get_db)):
+    return recipes.read_all(db)
+
+@app.get("/recipes/{recipes_id}", tags=["Recipes"])
+def read_recipe(recipes_id: int, db: Session = Depends(get_db)):
+    return recipes.read_one(db, recipes_id)
+
+@app.put("/recipes/{recipes_id}", tags=["Recipes"])
+def update_recipe(recipes_id: int, request: schemas.RecipeUpdate, db: Session = Depends(get_db)):
+    return recipes.update(db, recipes_id, request)
+
+@app.delete("/recipes/{recipes_id}", tags=["Recipes"])
+def delete_recipe(recipes_id: int, db: Session = Depends(get_db)):
+    recipes.delete(db, recipes_id)
+
 #
