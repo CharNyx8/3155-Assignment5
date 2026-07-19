@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 
 from .models import models, schemas
-from .controllers import orders
+from .controllers import orders, sandwiches, resources, recipes, order_details
 from .dependencies.database import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
@@ -53,3 +53,27 @@ def delete_one_order(order_id: int, db: Session = Depends(get_db)):
     if order is None:
         raise HTTPException(status_code=404, detail="User not found")
     return orders.delete(db=db, order_id=order_id)
+
+# Sandwiches
+
+@app.post("/sandwiches", tags=["Sandwiches"])
+def create_sandwich(request: schemas.SandwichCreate, db: Session = Depends(get_db)):
+    return sandwiches.create(db, request)
+
+@app.get("/sandwiches", tags=["Sandwiches"])
+def read_sandwiches(db: Session = Depends(get_db)):
+    return sandwiches.read_all(db)
+
+@app.get("/sandwiches/{sandwich_id}", tags=["Sandwiches"])
+def read_sandwich(sandwich_id: int, db: Session = Depends(get_db)):
+    return sandwiches.read_one(db, sandwich_id)
+
+@app.put("/sandwiches/{sandwich_id}", tags=["Sandwiches"])
+def update_sandwich(sandwich_id: int, request: schemas.SandwichUpdate, db: Session = Depends(get_db)):
+    return sandwiches.update(db, sandwich_id, request)
+
+@app.delete("/sandwiches/{sandwich_id}", tags=["Sandwiches"])
+def delete_sandwich(sandwich_id: int, db: Session = Depends(get_db)):
+    sandwiches.delete(db, sandwich_id)
+
+#
