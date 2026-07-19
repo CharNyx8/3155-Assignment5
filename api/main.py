@@ -76,4 +76,26 @@ def update_sandwich(sandwich_id: int, request: schemas.SandwichUpdate, db: Sessi
 def delete_sandwich(sandwich_id: int, db: Session = Depends(get_db)):
     sandwiches.delete(db, sandwich_id)
 
+# Resources
+
+@app.post("/resources", tags=["Resources"])
+def create_resources(request: schemas.ResourceCreate, db: Session = Depends(get_db)):
+    return resources.create(db, request)
+
+@app.get("/resources", tags=["Resources"])
+def read_resources(db: Session = Depends(get_db)):
+    return resources.read_all(db)
+
+@app.get("/resources/{resource_id}", tags=["Resources"])
+def read_resource(resource_id: int, db: Session = Depends(get_db)):
+    return resources.read_one(db, resource_id)
+
+@app.put("/resources/{resource_id}", tags=["Resources"])
+def update_resource(resource_id: int, request: schemas.ResourceUpdate, db: Session = Depends(get_db)):
+    return resources.update(db, resource_id, request)
+
+@app.delete("/resources/{resource_id}", tags=["Resources"])
+def delete_resource(resource_id: int, db: Session = Depends(get_db)):
+    resources.delete(db, resource_id)
+
 #
